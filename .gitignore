@@ -1,0 +1,10 @@
+.env
+
+audio/*
+!audio/.gitkeep
+
+letsencrypt/*
+!letsencrypt/.gitkeep
+
+config/*
+!config/agent-config.yml.template

@@ -1,0 +1,20 @@
+{
+  "name": "voice-agent",
+  "version": "1.0.0",
+  "description": "Fastify webhook for Twilio transcriptions + OpenAI chat + TTS",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "NODE_ENV=development node --watch src/index.js"
+  },
+  "dependencies": {
+    "fastify": "^5.0.0",
+    "@fastify/formbody": "^8.0.1",
+    "@fastify/static": "^8.0.0",
+    "js-yaml": "^4.1.0",
+    "node-fetch": "^3.3.2",
+    "twilio": "^5.3.4",
+    "uuid": "^9.0.1"
+  }
+}

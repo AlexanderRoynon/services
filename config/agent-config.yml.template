@@ -1,0 +1,11 @@
+# High-level assistant configuration
+system_prompt: |-
+  Put instructions for brand voice and other general relevant info here.
+
+max_response_chars: 600
+language: en-US
+
+# Audio output preferences
+audio:
+  format: wav
+  sample_rate_hz: 16000

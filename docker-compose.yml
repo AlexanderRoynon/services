@@ -1,0 +1,48 @@
+
+services:
+  traefik:
+    image: traefik:v2.11
+    restart: unless-stopped
+    command:
+      - --accesslog=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entryPoints.web.address=:80
+      - --entryPoints.websecure.address=:443
+      - --certificatesResolvers.letsencrypt.acme.email=${LETSENCRYPT_EMAIL}
+      - --certificatesResolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      - --certificatesResolvers.letsencrypt.acme.httpChallenge.entryPoint=web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+    networks: [web]
+
+  voice-agent:
+    build: ./voice-agent
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Fallbacks; override via .env
+      - PORT=3000
+      - NODE_ENV=production
+    volumes:
+      - ./config/agent-config.yml:/app/config.yml:rw   # editable from host (SSH)
+      - ./audio:/app/audio
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${COMPOSE_PROJECT_NAME:-services}_web
+      - traefik.http.routers.voiceagent.rule=Host(`${VOICE_AGENT_HOST}`)
+      - traefik.http.routers.voiceagent.entrypoints=websecure
+      - traefik.http.routers.voiceagent.tls.certresolver=letsencrypt
+      - traefik.http.services.voiceagent.loadbalancer.server.port=3000
+    networks: [web]
+
+networks:
+  web:
+    driver: bridge
+
+volumes:
+  audio_cache:
