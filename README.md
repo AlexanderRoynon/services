@@ -7,8 +7,8 @@
 - OpenAI API key
 
 ## Configure
-1. Copy `.env.example` to `.env` and fill values.
-2. Ensure `config/agent-config.yml` matches your preferences.
+1. From `.env.template` create a `.env` and fill the values with your information.
+1. From `config/.agent-config.yml.template` create a `config/agent-config.yml` and fill the values with your information.
 3. Set your domain in `VOICE_AGENT_HOST`.
 
 ## Run
